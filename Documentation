@@ -1,0 +1,104 @@
+
+info:
+  title: API Documentation
+  description: Clear and Comprehensive Documentation for API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8085/api
+    description: Local Development Server
+paths:
+  /projects/add:
+    post:
+      summary: Add a new project
+      description: |
+        Endpoint to add a new project. Requires a JSON request body with project details.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              example:
+                message: Validation errors
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              example:
+                message: Project already exists
+  /projects/update/{id}:
+    put:
+      summary: Update a project
+      description: |
+        Endpoint to update an existing project. Requires a JSON request body with updated project details.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Project ID to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              example:
+                message: Validation errors
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+  /projects/all:
+    get:
+      summary: Get all projects
+      description: Retrieve a list of all projects.
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+components:
+  schemas:
+    Project:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
